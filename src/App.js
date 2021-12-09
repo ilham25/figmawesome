@@ -1,25 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
 
-function App() {
+import MainCanvas from "components/canvas";
+import NavBar from "components/navbar/NavBar";
+import ComponentSidebar from "components/sidebar/ComponentSidebar";
+import PropertiesSidebar from "components/sidebar/PropertiesSidebar";
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="h-screen w-screen overflow-hidden bg-gray-200">
+      <NavBar />
+      <div className="grid grid-cols-6 h-full">
+        <ComponentSidebar />
+        <MainCanvas />
+        <PropertiesSidebar />
+      </div>
     </div>
   );
-}
+};
 
 export default App;
