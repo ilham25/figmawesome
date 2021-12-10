@@ -84,7 +84,7 @@ const widgetData = [
 
 function ComponentSidebar() {
   return (
-    <Sidebar>
+    <Sidebar header="Widget List">
       {widgetData?.map((widget) => (
         <Expandable key={widget?.id} title={widget?.title} data={widget} />
       ))}

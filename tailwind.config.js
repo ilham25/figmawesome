@@ -25,8 +25,9 @@ module.exports = {
       sans: ["Inter", "sans-serif"],
     },
   },
+  plugins: [require("tailwind-scrollbar")],
   variants: {
     extend: {},
+    scrollbar: ["rounded"],
   },
-  plugins: [],
 };
