@@ -72,15 +72,20 @@ function MainCanvas() {
             //   x: scaleX + 0.05,
             //   y: scaleY + 0.05,
             // }));
-            e.target.scaleX(scaleX + 0.05);
-            e.target.scaleY(scaleY + 0.05);
+
+            if (scaleX <= 10 || scaleY <= 10) {
+              e.target.scaleX(scaleX + 0.05);
+              e.target.scaleY(scaleY + 0.05);
+            }
           } else {
             // setScaleRaw((prev) => ({
             //   x: scaleX - 0.05,
             //   y: scaleY - 0.05,
             // }));
-            e.target.scaleX(scaleX - 0.05);
-            e.target.scaleY(scaleY - 0.05);
+            if (scaleX >= 0.2 || scaleY >= 0.2) {
+              e.target.scaleX(scaleX - 0.05);
+              e.target.scaleY(scaleY - 0.05);
+            }
           }
         }}
         // scale={scale}
@@ -88,30 +93,28 @@ function MainCanvas() {
       >
         <Layer>
           {stars.map((star) => (
-            <>
-              <Star
-                key={star.id}
-                id={star.id}
-                x={star.x}
-                y={star.y}
-                numPoints={5}
-                innerRadius={20}
-                outerRadius={40}
-                fill="#89b717"
-                opacity={0.8}
-                draggable
-                rotation={star.rotation}
-                shadowColor="black"
-                shadowBlur={10}
-                shadowOpacity={0.6}
-                shadowOffsetX={star.isDragging ? 10 : 5}
-                shadowOffsetY={star.isDragging ? 10 : 5}
-                scaleX={star.isDragging ? 1.2 : 1}
-                scaleY={star.isDragging ? 1.2 : 1}
-                onDragStart={handleDragStart}
-                onDragEnd={handleDragEnd}
-              />
-            </>
+            <Star
+              key={star.id}
+              id={star.id}
+              x={star.x}
+              y={star.y}
+              numPoints={5}
+              innerRadius={20}
+              outerRadius={40}
+              fill="#89b717"
+              opacity={0.8}
+              draggable
+              rotation={star.rotation}
+              shadowColor="black"
+              shadowBlur={10}
+              shadowOpacity={0.6}
+              shadowOffsetX={star.isDragging ? 10 : 5}
+              shadowOffsetY={star.isDragging ? 10 : 5}
+              scaleX={star.isDragging ? 1.2 : 1}
+              scaleY={star.isDragging ? 1.2 : 1}
+              onDragStart={handleDragStart}
+              onDragEnd={handleDragEnd}
+            />
           ))}
         </Layer>
       </Stage>

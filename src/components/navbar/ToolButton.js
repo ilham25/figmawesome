@@ -17,14 +17,23 @@ function ToolButton({
   return (
     <div
       className="relative group"
-      onClick={() => {
-        setTool(type);
-      }}
-      onBlur={() => {
-        setTool(null);
-      }}
+
+      // onBlur={() => {
+      //   setTool(null);
+      // }}
     >
-      <button className="h-full flex items-center outline-none justify-center px-3 hover:bg-black focus:bg-cyan-500">
+      <button
+        className={`h-full flex items-center outline-none justify-center px-3 hover:bg-black ${
+          tool === type && "bg-cyan-500 hover:bg-cyan-500"
+        }`}
+        onClick={() => {
+          if (tool === type) {
+            setTool(null);
+          } else {
+            setTool(type);
+          }
+        }}
+      >
         <Icon className="text-white" size={24} />
       </button>
       {type !== tool && <Tooltip title={title} />}

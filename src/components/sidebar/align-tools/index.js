@@ -10,7 +10,7 @@ import AlignButton from "./AlignButton";
 
 function AlignTools() {
   return (
-    <div className="w-full grid grid-cols-6 py-4 px-1">
+    <div className="w-full grid grid-cols-6 py-2 px-1">
       <AlignButton
         className="transform -rotate-90"
         icon={AiOutlineVerticalAlignTop}

@@ -1,38 +1,65 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AiFillCaretRight } from "react-icons/ai";
 
-const PopupList = ({ title, data }) => {
-  let hasChildren = data?.child;
+const PopupList = ({ data, selectedElementProps }) => {
+  const [isActive, setIsActive] = useState(null);
+  const { set: setSelected } = selectedElementProps;
   return (
-    <button className="w-full hover:bg-cyan-500 px-4 py-1 relative group cursor-default flex justify-between items-center">
-      <p className="text-xs text-white whitespace-nowrap mr-5">{title}</p>
-      <div className="h-full flex items-end ">
-        <AiFillCaretRight size={8} className={`text-white`} />
-      </div>
-      {/* <div className="absolute top-0 origin-bottom-right hidden group-focus:block w-5 h-5 bg-black">
-        <ul>
-          <li>aowekoawe</li>
-        </ul>
-      </div> */}
-    </button>
+    <>
+      {data?.map((item) => (
+        <div key={item.key} className="relative group">
+          <button
+            className="w-full hover:bg-cyan-500 px-4 py-1  cursor-default flex justify-between items-center relative group"
+            onClick={() => {
+              if (item?.child) {
+                setIsActive(item.key);
+                setSelected(null);
+              } else {
+                setSelected(item.key);
+              }
+            }}
+          >
+            <p className="text-xs text-white whitespace-nowrap mr-5">
+              {item?.title}
+            </p>
+            {item.child && (
+              <div className="h-full flex items-end">
+                <AiFillCaretRight size={8} className={`text-white`} />
+              </div>
+            )}
+          </button>
+
+          {isActive === item.key && (
+            <div className="bg-black py-1 absolute top-0 left-full w-auto rounded-sm z-50 mt-2 ml-1">
+              <PopupList
+                data={item?.child}
+                selectedElementProps={selectedElementProps}
+              />
+            </div>
+          )}
+        </div>
+      ))}
+    </>
   );
 };
 
-// const PopupChild = ({ data }) => {
-//   return (
-//     <ul>
-//       <PopupList />
-//     </ul>
-//   );
-// };
-
 function Popup({ data }) {
+  const [selectedElement, setSelectedElement] = useState(null);
+
+  useEffect(() => {
+    console.log(selectedElement);
+  }, [selectedElement]);
+
   return (
     <div className="bg-black  py-1 absolute origin-bottom-right left-1/2  w-auto rounded-sm transform -translate-x-1/2 z-50 mt-2">
       <ul>
-        {data?.map((item) => (
-          <PopupList key={item.key} title={item.title} data={data} />
-        ))}
+        <PopupList
+          data={data}
+          selectedElementProps={{
+            get: selectedElement,
+            set: setSelectedElement,
+          }}
+        />
       </ul>
     </div>
   );

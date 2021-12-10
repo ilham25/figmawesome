@@ -120,6 +120,7 @@ export const toolList = {
       child: [
         {
           key: "naughty.list",
+          title: "Notification List",
           child: [
             {
               key: "naughty.list.actions",
@@ -133,6 +134,7 @@ export const toolList = {
         },
         {
           key: "naughty.widget",
+          title: "Notification Widget",
           child: [
             {
               key: "naughty.widget.icon",
@@ -298,7 +300,235 @@ export const toolList = {
   ],
   popbars: [],
 };
+export const widgetData = [
+  {
+    id: 1,
+    title: "Widget 1",
+    child: [
+      {
+        id: 1,
+        title: "Children 1",
+        child: [
+          {
+            id: 1,
+            title: "Child 1",
+            child: [],
+          },
+        ],
+      },
+      {
+        id: 2,
+        title: "Children 1",
+        child: [
+          {
+            id: 1,
+            title: "Child 1",
+            child: [],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 2,
+    title: "asdasd 1",
+    child: [
+      {
+        id: 1,
+        title: "sgvsfsdf 1",
+        child: [
+          {
+            id: 1,
+            title: "sgsrser 1",
+            child: [],
+          },
+        ],
+      },
+      {
+        id: 2,
+        title: "wrwrsdf 1",
+        child: [
+          {
+            id: 1,
+            title: "aerarar 1",
+            child: [
+              {
+                id: 1,
+                title: "aerarar 1",
+                child: [],
+              },
+              {
+                id: 2,
+                title: "aerarar 1",
+                child: [],
+              },
+              {
+                id: 3,
+                title: "aerarar 1",
+                child: [
+                  {
+                    id: 1,
+                    title: "aerarar 1",
+                    child: [],
+                  },
+                  {
+                    id: 2,
+                    title: "aerarar 1",
+                    child: [],
+                  },
+                  {
+                    id: 3,
+                    title: "aerarar 1",
+                    child: [],
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            id: 2,
+            title: "aerarar 1",
+            child: [],
+          },
+          {
+            id: 3,
+            title: "aerarar 1",
+            child: [],
+          },
+        ],
+      },
+      {
+        id: 3,
+        title: "wrwrsdf 1",
+        child: [
+          {
+            id: 1,
+            title: "aerarar 1",
+            child: [
+              {
+                id: 1,
+                title: "aerarar 1",
+                child: [],
+              },
+              {
+                id: 2,
+                title: "aerarar 1",
+                child: [],
+              },
+              {
+                id: 3,
+                title: "aerarar 1",
+                child: [],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 3,
+    title: "asdasd 1",
+    child: [
+      {
+        id: 1,
+        title: "sgvsfsdf 1",
+        child: [
+          {
+            id: 1,
+            title: "sgsrser 1",
+            child: [],
+          },
+        ],
+      },
+      {
+        id: 2,
+        title: "wrwrsdf 1",
+        child: [
+          {
+            id: 1,
+            title: "aerarar 1",
+            child: [],
+          },
+          {
+            id: 2,
+            title: "aerarar 1",
+            child: [],
+          },
+          {
+            id: 3,
+            title: "aerarar 1",
+            child: [],
+          },
+        ],
+      },
+      {
+        id: 3,
+        title: "wrwrsdf 1",
+        child: [
+          {
+            id: 1,
+            title: "aerarar 1",
+            child: [],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 4,
+    title: "asdasd 1",
+    child: [
+      {
+        id: 1,
+        title: "sgvsfsdf 1",
+        child: [
+          {
+            id: 1,
+            title: "sgsrser 1",
+            child: [],
+          },
+        ],
+      },
+      {
+        id: 2,
+        title: "wrwrsdf 1",
+        child: [
+          {
+            id: 1,
+            title: "aerarar 1",
+            child: [],
+          },
+          {
+            id: 2,
+            title: "aerarar 1",
+            child: [],
+          },
+          {
+            id: 3,
+            title: "aerarar 1",
+            child: [],
+          },
+        ],
+      },
+      {
+        id: 3,
+        title: "wrwrsdf 1",
+        child: [
+          {
+            id: 1,
+            title: "aerarar 1",
+            child: [],
+          },
+        ],
+      },
+    ],
+  },
+];
 
 export const isValidColor = (str) => {
-  return str.match(/^#[a-f0-9]{6}$/i) !== null;
+  const three = /^#[a-f0-9]{3}$/i;
+  const six = /^#[a-f0-9]{6}$/i;
+
+  return str.match(three) !== null || str.match(six);
 };
