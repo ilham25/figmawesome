@@ -53,6 +53,152 @@ const widgetData = [
           {
             id: 1,
             title: "aerarar 1",
+            child: [
+              {
+                id: 1,
+                title: "aerarar 1",
+                child: [],
+              },
+              {
+                id: 2,
+                title: "aerarar 1",
+                child: [],
+              },
+              {
+                id: 3,
+                title: "aerarar 1",
+                child: [
+                  {
+                    id: 1,
+                    title: "aerarar 1",
+                    child: [],
+                  },
+                  {
+                    id: 2,
+                    title: "aerarar 1",
+                    child: [],
+                  },
+                  {
+                    id: 3,
+                    title: "aerarar 1",
+                    child: [],
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            id: 2,
+            title: "aerarar 1",
+            child: [],
+          },
+          {
+            id: 3,
+            title: "aerarar 1",
+            child: [],
+          },
+        ],
+      },
+      {
+        id: 3,
+        title: "wrwrsdf 1",
+        child: [
+          {
+            id: 1,
+            title: "aerarar 1",
+            child: [
+              {
+                id: 1,
+                title: "aerarar 1",
+                child: [],
+              },
+              {
+                id: 2,
+                title: "aerarar 1",
+                child: [],
+              },
+              {
+                id: 3,
+                title: "aerarar 1",
+                child: [],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 3,
+    title: "asdasd 1",
+    child: [
+      {
+        id: 1,
+        title: "sgvsfsdf 1",
+        child: [
+          {
+            id: 1,
+            title: "sgsrser 1",
+            child: [],
+          },
+        ],
+      },
+      {
+        id: 2,
+        title: "wrwrsdf 1",
+        child: [
+          {
+            id: 1,
+            title: "aerarar 1",
+            child: [],
+          },
+          {
+            id: 2,
+            title: "aerarar 1",
+            child: [],
+          },
+          {
+            id: 3,
+            title: "aerarar 1",
+            child: [],
+          },
+        ],
+      },
+      {
+        id: 3,
+        title: "wrwrsdf 1",
+        child: [
+          {
+            id: 1,
+            title: "aerarar 1",
+            child: [],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 4,
+    title: "asdasd 1",
+    child: [
+      {
+        id: 1,
+        title: "sgvsfsdf 1",
+        child: [
+          {
+            id: 1,
+            title: "sgsrser 1",
+            child: [],
+          },
+        ],
+      },
+      {
+        id: 2,
+        title: "wrwrsdf 1",
+        child: [
+          {
+            id: 1,
+            title: "aerarar 1",
             child: [],
           },
           {
