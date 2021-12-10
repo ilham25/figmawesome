@@ -2,7 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { Stage, Layer, Star, Transformer, Rect } from "react-konva";
 import { useDebounce } from "use-debounce";
 
-import { useWindowSize } from "utils/hooks";
+import useWindowSize from "hooks/useWindowSize";
+import { useDispatch, useSelector } from "react-redux";
+import { changeZoom } from "reducer/zoomSlice";
 
 // function generateShapes() {
 //   return [...Array(10)].map((_, i) => ({
@@ -21,6 +23,9 @@ import { useWindowSize } from "utils/hooks";
 function MainCanvas() {
   const mainCanvasRef = useRef(null);
   const trRef = useRef(null);
+
+  const zoom = useSelector((state) => state.zoom);
+  const dispatch = useDispatch();
 
   const [width, height] = useWindowSize();
   const [canvasSize, setCanvasSize] = useState({ height: 100, width: 100 });
@@ -91,6 +96,11 @@ function MainCanvas() {
     });
   }, []);
 
+  useEffect(() => {
+    let zoomValue = (scale.x + scale.y) / 2;
+    dispatch(changeZoom(zoomValue));
+  }, [scale]);
+
   return (
     <div
       ref={mainCanvasRef}
@@ -105,35 +115,38 @@ function MainCanvas() {
           let scaleX = e.target.scaleX();
           let scaleY = e.target.scaleY();
 
-          if (e.evt.deltaY < 0) {
-            // setScaleRaw((prev) => ({
-            //   x: scaleX + 0.05,
-            //   y: scaleY + 0.05,
-            // }));
+          let scaleXChange = scaleX;
+          let scaleYChange = scaleY;
 
-            if (scaleX <= 10 || scaleY <= 10) {
+          if (e.evt.deltaY < 0) {
+            if (scaleX < 10 || scaleY < 10) {
               if (scaleX >= 0.2 || scaleY >= 0.2) {
-                e.target.scaleX(scaleX + 0.05);
-                e.target.scaleY(scaleY + 0.05);
+                scaleX = scaleX + 0.05;
+                scaleY = scaleY + 0.05;
               } else {
-                e.target.scaleX(scaleX + 0.01);
-                e.target.scaleY(scaleY + 0.01);
+                scaleX = scaleX + 0.01;
+                scaleY = scaleY + 0.01;
               }
             }
           } else {
-            // setScaleRaw((prev) => ({
-            //   x: scaleX - 0.05,
-            //   y: scaleY - 0.05,
-            // }));
-            if (scaleX >= 0.02 || scaleY >= 0.02) {
+            if (scaleX > 0.02 || scaleY > 0.02) {
               if (scaleX <= 0.2 || scaleY <= 0.2) {
-                e.target.scaleX(scaleX - 0.01);
-                e.target.scaleY(scaleY - 0.01);
+                scaleX = scaleX - 0.01;
+                scaleY = scaleY - 0.01;
               } else {
-                e.target.scaleX(scaleX - 0.05);
-                e.target.scaleY(scaleY - 0.05);
+                scaleX = scaleX - 0.05;
+                scaleY = scaleY - 0.05;
               }
             }
+          }
+
+          if (scale.x != scaleX || scale.y !== scaleY) {
+            e.target.scaleX(scaleX);
+            e.target.scaleY(scaleY);
+            setScaleRaw({
+              x: scaleX,
+              y: scaleY,
+            });
           }
         }}
         // scale={scale}
