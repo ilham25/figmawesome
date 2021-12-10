@@ -1,31 +1,34 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Stage, Layer, Star, Transformer } from "react-konva";
+import { Stage, Layer, Star, Transformer, Rect } from "react-konva";
 import { useDebounce } from "use-debounce";
 
 import { useWindowSize } from "utils/hooks";
 
-function generateShapes() {
-  return [...Array(10)].map((_, i) => ({
-    id: i.toString(),
-    x: Math.random() * window.innerWidth,
-    y: Math.random() * window.innerHeight,
-    rotation: Math.random() * 180,
-    isDragging: false,
-  }));
-}
+// function generateShapes() {
+//   return [...Array(10)].map((_, i) => ({
+//     id: i.toString(),
+//     x: Math.random() * window.innerWidth,
+//     y: Math.random() * window.innerHeight,
+//     isDragging: false,
+//     stroke: "transparent",
+//     strokeWidth: 3,
+//     strokeEnabled: true,
+//   }));
+// }
 
-const INITIAL_STATE = generateShapes();
+// const INITIAL_STATE = generateShapes();
 
 function MainCanvas() {
   const mainCanvasRef = useRef(null);
   const trRef = useRef(null);
 
   const [width, height] = useWindowSize();
-  const [canvasSize, setCanvasSize] = useState({ height: 0, width: 0 });
+  const [canvasSize, setCanvasSize] = useState({ height: 100, width: 100 });
   const [scaleRaw, setScaleRaw] = useState({ x: 1, y: 1 });
   const [scale] = useDebounce(scaleRaw, 200);
 
-  const [stars, setStars] = useState(INITIAL_STATE);
+  const [stars, setStars] = useState([]);
+  const [shouldAdd, setShouldAdd] = useState(false);
 
   const handleDragStart = (e) => {
     const id = e.target.id();
@@ -48,6 +51,28 @@ function MainCanvas() {
       })
     );
   };
+  const handleMouseEnter = (e) => {
+    const id = e.target.id();
+    setStars(
+      stars.map((star) => {
+        return {
+          ...star,
+          stroke: star.id === id ? "#33aeff" : undefined,
+        };
+      })
+    );
+  };
+  const handleMouseLeave = (e) => {
+    const id = e.target.id();
+    setStars(
+      stars.map((star) => {
+        return {
+          ...star,
+          stroke: star.id === id ? "transparent" : undefined,
+        };
+      })
+    );
+  };
 
   useEffect(() => {
     if (mainCanvasRef) {
@@ -58,8 +83,21 @@ function MainCanvas() {
     }
   }, [mainCanvasRef, width, height]);
 
+  useEffect(() => {
+    window.addEventListener("keypress", (e) => {
+      if (e.key === "r") {
+        setShouldAdd(true);
+      }
+    });
+  }, []);
+
   return (
-    <div ref={mainCanvasRef} className="col-span-4 mb-12 overflow-hidden">
+    <div
+      ref={mainCanvasRef}
+      className={`col-span-4 mb-12 overflow-hidden ${
+        shouldAdd && "cursor-crosshair"
+      }`}
+    >
       <Stage
         width={canvasSize.width}
         height={canvasSize.height}
@@ -74,46 +112,73 @@ function MainCanvas() {
             // }));
 
             if (scaleX <= 10 || scaleY <= 10) {
-              e.target.scaleX(scaleX + 0.05);
-              e.target.scaleY(scaleY + 0.05);
+              if (scaleX >= 0.2 || scaleY >= 0.2) {
+                e.target.scaleX(scaleX + 0.05);
+                e.target.scaleY(scaleY + 0.05);
+              } else {
+                e.target.scaleX(scaleX + 0.01);
+                e.target.scaleY(scaleY + 0.01);
+              }
             }
           } else {
             // setScaleRaw((prev) => ({
             //   x: scaleX - 0.05,
             //   y: scaleY - 0.05,
             // }));
-            if (scaleX >= 0.2 || scaleY >= 0.2) {
-              e.target.scaleX(scaleX - 0.05);
-              e.target.scaleY(scaleY - 0.05);
+            if (scaleX >= 0.02 || scaleY >= 0.02) {
+              if (scaleX <= 0.2 || scaleY <= 0.2) {
+                e.target.scaleX(scaleX - 0.01);
+                e.target.scaleY(scaleY - 0.01);
+              } else {
+                e.target.scaleX(scaleX - 0.05);
+                e.target.scaleY(scaleY - 0.05);
+              }
             }
           }
         }}
         // scale={scale}
         draggable
+        // onContextMenu={() => {
+        //   setShouldAdd(true);
+        // }}
+        onClick={(e) => {
+          if (shouldAdd) {
+            setStars((prev) => [
+              ...prev,
+              {
+                id: Math.floor(Math.random() * 1000),
+                isDragging: false,
+                x: e.evt.offsetX,
+                y: e.evt.offsetY,
+                stroke: "transparent",
+                strokeWidth: 3,
+                strokeEnabled: true,
+              },
+            ]);
+            setShouldAdd(false);
+          }
+        }}
       >
         <Layer>
           {stars.map((star) => (
-            <Star
+            <Rect
               key={star.id}
               id={star.id}
               x={star.x}
               y={star.y}
-              numPoints={5}
-              innerRadius={20}
-              outerRadius={40}
-              fill="#89b717"
-              opacity={0.8}
+              height={100}
+              width={100}
+              fill="#fff"
+              opacity={1}
               draggable
-              rotation={star.rotation}
-              shadowColor="black"
-              shadowBlur={10}
-              shadowOpacity={0.6}
-              shadowOffsetX={star.isDragging ? 10 : 5}
-              shadowOffsetY={star.isDragging ? 10 : 5}
-              scaleX={star.isDragging ? 1.2 : 1}
-              scaleY={star.isDragging ? 1.2 : 1}
               onDragStart={handleDragStart}
               onDragEnd={handleDragEnd}
+              strokeEnabled={star?.stroke}
+              stroke={star?.stroke}
+              strokeWidth={star?.strokeWidth}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              onClick={handleMouseEnter}
             />
           ))}
         </Layer>

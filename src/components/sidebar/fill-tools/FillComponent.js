@@ -16,7 +16,7 @@ function FillComponent() {
             }}
           ></div>
           <input
-            className="text-xxs w-full h-full outline-none"
+            className="text-xxs w-full h-full outline-none cursor-default"
             defaultValue={color}
             onKeyPress={(e) => {
               if (e.key === "Enter") {
@@ -34,7 +34,7 @@ function FillComponent() {
         </div>
         <div className="h-full w-16 p-1 flex items-center">
           <input
-            className="text-xxs w-full h-full outline-none"
+            className="text-xxs w-full h-full outline-none cursor-default"
             defaultValue={opacity * 100}
             type="number"
             min={0}

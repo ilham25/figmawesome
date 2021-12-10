@@ -30,7 +30,7 @@ const PopupList = ({ data, selectedElementProps }) => {
           </button>
 
           {isActive === item.key && (
-            <div className="bg-black py-1 absolute top-0 left-full w-auto rounded-sm z-50 mt-2 ml-1">
+            <div className="bg-black py-1 absolute top-0 left-full w-auto rounded-sm z-50 mt-2 ml-1 shadow-sm">
               <PopupList
                 data={item?.child}
                 selectedElementProps={selectedElementProps}
@@ -46,12 +46,8 @@ const PopupList = ({ data, selectedElementProps }) => {
 function Popup({ data }) {
   const [selectedElement, setSelectedElement] = useState(null);
 
-  useEffect(() => {
-    console.log(selectedElement);
-  }, [selectedElement]);
-
   return (
-    <div className="bg-black  py-1 absolute origin-bottom-right left-1/2  w-auto rounded-sm transform -translate-x-1/2 z-50 mt-2">
+    <div className="bg-black  py-1 absolute origin-bottom-right left-1/2  w-auto rounded-sm transform -translate-x-1/2 z-50 mt-2 shadow-sm">
       <ul>
         <PopupList
           data={data}
