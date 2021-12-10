@@ -4,7 +4,7 @@ import PropsComponent from "./PropsComponent";
 
 function PropsTools() {
   return (
-    <div className="w-full grid grid-cols-2 p-3 border-y border-gray-200 gap-1">
+    <div className="w-full grid grid-cols-2 py-4 px-2 border-y border-gray-200 gap-1">
       <PropsComponent text="X" />
       <PropsComponent text="Y" />
       <PropsComponent text="W" />
