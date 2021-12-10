@@ -1,11 +1,19 @@
 import { useState } from "react";
 import { AiFillCaretRight } from "react-icons/ai";
 
-function Expandable({ title = "Frame", children, isChildren }) {
+function Expandable({ title = "Frame", isChildren, data }) {
   const [isExpand, setIsExpand] = useState(false);
+  const hasChildren = data?.child;
+
   return (
-    <div>
-      <div className="py-2 px-2 border border-transparent hover:border-cyan-500 cursor-default flex group">
+    <button
+      className={`w-full outline-none ${
+        !isChildren ? "focus:bg-cyan-50 " : "focus:bg-gray-100"
+      }`}
+    >
+      <div
+        className={`py-2 px-2 border border-transparent hover:border-cyan-500 cursor-default flex group`}
+      >
         <div className="flex items-center">
           <div
             className="h-full flex items-center pr-1"
@@ -27,8 +35,23 @@ function Expandable({ title = "Frame", children, isChildren }) {
           </p>
         </div>
       </div>
-      {isExpand && <div className="pl-3">{children}</div>}
-    </div>
+      {hasChildren && (
+        <>
+          {isExpand && (
+            <div className="pl-3">
+              {data?.child?.map((child, idx) => (
+                <Expandable
+                  key={child?.id}
+                  title={child?.title}
+                  data={child}
+                  isChildren
+                />
+              ))}
+            </div>
+          )}
+        </>
+      )}
+    </button>
   );
 }
 

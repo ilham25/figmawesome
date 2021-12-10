@@ -8,7 +8,7 @@ module.exports = {
         xxs: [
           ".625rem",
           {
-            letterSpacing: "0.05em",
+            letterSpacing: "0.02em",
           },
         ],
       },
