@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { isValidColor } from "utils";
 
-function FillComponent() {
-  const [color, setColor] = useState("#000000");
-  const [opacity, setOpacity] = useState(1);
+function FillComponent({ selectedComponentProps, setProperties }) {
+  const { get: selectedComponent } = selectedComponentProps || {};
+
+  let fill = selectedComponent?.properties?.fill || "#c4c4c4";
+  let opacity = selectedComponent?.properties?.opacity || 1;
+
   return (
     <div className="grid grid-cols-8">
       <div className="col-span-6 h-7 flex border border-transparent rounded-sm hover:border-gray-200 group relative mr-3">
@@ -11,24 +14,28 @@ function FillComponent() {
           <div
             className="w-5 h-4 mr-2 rounded-sm"
             style={{
-              backgroundColor: color[0] === "#" ? color : `#${color}`,
+              backgroundColor: fill[0] === "#" ? fill : `#${fill}`,
               opacity: opacity,
             }}
           ></div>
           <input
-            className="text-xxs w-full h-full outline-none cursor-default"
-            defaultValue={color}
+            className="text-xxs w-full h-full outline-none cursor-default uppercase"
+            defaultValue={fill}
             onKeyPress={(e) => {
               if (e.key === "Enter") {
-                setColor((prev) =>
-                  isValidColor(e.target.value) ? e.target.value : prev
-                );
+                let finalFill = isValidColor(e.target.value)
+                  ? e.target.value
+                  : fill;
+
+                setProperties("fill", finalFill);
               }
             }}
             onBlur={(e) => {
-              setColor((prev) =>
-                isValidColor(e.target.value) ? e.target.value : prev
-              );
+              let finalFill = isValidColor(e.target.value)
+                ? e.target.value
+                : fill;
+
+              setProperties("fill", finalFill);
             }}
           />
         </div>
@@ -41,11 +48,11 @@ function FillComponent() {
             max={100}
             onKeyPress={(e) => {
               if (e.key === "Enter") {
-                setOpacity(e.target.value / 100);
+                setProperties("opacity", e.target.value / 100);
               }
             }}
             onBlur={(e) => {
-              setOpacity(e.target.value / 100);
+              setProperties("opacity", e.target.value / 100);
             }}
           />
         </div>

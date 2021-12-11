@@ -38,6 +38,7 @@ function PropsComponent({
         onBlur={(e) => {
           setValue(type, +e.target.value);
         }}
+        // value={value[type] || 0}
       />
       {title && <Tooltip title={title} />}
     </div>

@@ -184,7 +184,7 @@ function MainCanvas() {
                   height: 100,
                   width: 100,
                   opacity: 1,
-                  fill: "#fff",
+                  fill: "#c4c4c4",
                   rotation: 0,
                 },
                 parentId: e.target?.attrs?.id ?? undefined,

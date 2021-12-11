@@ -66,6 +66,9 @@ Tools list
       wibox
 */
 
+import { useDispatch } from "react-redux";
+import { changeProperties } from "reducer/componentListSlice";
+
 export const toolList = {
   components: [
     {
