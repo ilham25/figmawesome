@@ -13,12 +13,15 @@ import {
   changeSelectedComponent,
   changeProperties,
 } from "reducer/componentListSlice";
+import { resetTool } from "reducer/selectedToolSlice";
+import { toolTitleList } from "utils";
 
 function MainCanvas() {
   const mainCanvasRef = useRef(null);
   const trRef = useRef(null);
 
   const componentList = useSelector((state) => state.componentList);
+  const selectedTool = useSelector((state) => state.selectedTool);
   const dispatch = useDispatch();
 
   const [width, height] = useWindowSize();
@@ -28,7 +31,7 @@ function MainCanvas() {
 
   const [components, setComponents] = useState([]);
 
-  const [shouldAdd, setShouldAdd] = useState(false);
+  const [shouldAdd, setShouldAdd] = useState(selectedTool.value);
   const [shouldGrab, setShouldGrab] = useState(false);
 
   const handleDragStart = (e) => {
@@ -120,7 +123,9 @@ function MainCanvas() {
       dispatch(
         addComponent({
           id: uuidv4(),
-          title: "Rectangle",
+          title: toolTitleList[selectedTool?.value],
+          key: selectedTool?.value,
+          group: selectedTool?.navTool,
           properties: {
             isDragging: false,
             x: position.x,
@@ -137,7 +142,7 @@ function MainCanvas() {
           parentId: e.target?.attrs?.id ?? undefined,
         })
       );
-      setShouldAdd(false);
+      dispatch(resetTool());
     }
     if (e.target.attrs.id) {
       dispatch(changeSelectedComponent(e.target.attrs.id));
@@ -145,6 +150,14 @@ function MainCanvas() {
       dispatch(changeSelectedComponent(null));
     }
   };
+
+  useEffect(() => {
+    if (selectedTool?.value) {
+      setShouldAdd(selectedTool?.value);
+    } else {
+      setShouldAdd(null);
+    }
+  }, [selectedTool]);
 
   useEffect(() => {
     if (mainCanvasRef) {

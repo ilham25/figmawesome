@@ -66,8 +66,52 @@ Tools list
       wibox
 */
 
-import { useDispatch } from "react-redux";
-import { changeProperties } from "reducer/componentListSlice";
+export const toolTitleList = {
+  "awful.widget.button": "Button",
+  "awful.widget.clienticon": "Client Icon",
+  "awful.widget.keyboardlayout": "Keyboard Layout",
+  "awful.widget.launcher": "Launcher",
+  "awful.widget.layoutbox": "Layout Box",
+  "awful.widget.layoutlist": "Layout List",
+  "awful.widget.prompt": "Prompt",
+  "awful.widget.taglist": "Tag List",
+  "awful.widget.tasklist": "Task List",
+  "awful.widget.watch": "Watch",
+  "naughty.list.actions": "Actions",
+  "naughty.list.notifications": "Notifications",
+  "naughty.widget.icon": "Icon",
+  "naughty.widget.message": "Message",
+  "naughty.widget.title": "Title",
+  "wibox.widget.calendar": "Calendar",
+  "wibox.widget.checkbox": "Checkbox",
+  "wibox.widget.graph": "Graph",
+  "wibox.widget.imagebox": "Image Box",
+  "wibox.widget.piechart": "Pie Chart",
+  "wibox.widget.progressbar": "Progressbar",
+  "wibox.widget.separator": "Separator",
+  "wibox.widget.slider": "Slider",
+  "wibox.widget.systray": "Systray",
+  "wibox.widget.textbox": "Textbox",
+  "wibox.widget.textclock": "Text Clock",
+  "naughty.widget.background": "Background",
+  "wibox.container.arcchart": "Arc Chart",
+  "wibox.container.background": "Background",
+  "wibox.container.constraint": "Constraint",
+  "wibox.container.margin": "Margin",
+  "wibox.container.mirror": "Mirror",
+  "wibox.container.place": "Place",
+  "wibox.container.radialprogressbar": "Radial Progressbar",
+  "wibox.container.rotate": "Rotate",
+  "wibox.container.scroll": "Scroll",
+  "wibox.container.tile": "Tile",
+  "wibox.layout.align": "Align",
+  "wibox.layout.fixed": "Fixed",
+  "wibox.layout.flex": "Flex",
+  "wibox.layout.grid": "Grid",
+  "wibox.layout.manual": "Manual",
+  "wibox.layout.ratio": "Ratio",
+  "wibox.layout.stack": "Stack",
+};
 
 export const toolList = {
   components: [

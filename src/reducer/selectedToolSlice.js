@@ -17,9 +17,14 @@ export const selectedToolSlice = createSlice({
     changeNavTool: (state, action) => {
       state.navTool = action.payload;
     },
+    resetTool: (state) => {
+      state.value = null;
+      state.navTool = null;
+    },
   },
 });
 
-export const { changeSelectedTool, changeNavTool } = selectedToolSlice.actions;
+export const { changeSelectedTool, changeNavTool, resetTool } =
+  selectedToolSlice.actions;
 
 export default selectedToolSlice.reducer;
