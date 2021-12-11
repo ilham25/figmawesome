@@ -40,6 +40,7 @@ export const componentListSlice = createSlice({
           strokeEnabled: true,
           opacity: 1,
           fill: "#fff",
+          rotation: 0,
         },
         child: [],
       },
@@ -64,17 +65,12 @@ export const componentListSlice = createSlice({
       state.selectedId = action.payload;
     },
     changeProperties: (state, action) => {
-      state.value = state.value.map((comp, index) => {
-        if (comp.id === action.payload.id) {
-          state.value[index] = {
-            id: action.payload.id,
-            ...action,
-            properties: {
-              ...action.payload.properties,
-            },
-          };
-        }
-        return comp;
+      state.value = state.value.map((comp) => {
+        return comp.id === action.payload.id
+          ? {
+              ...action.payload,
+            }
+          : comp;
       });
     },
   },
@@ -86,6 +82,7 @@ export const {
   onMouseEnter,
   onMouseLeave,
   changeSelectedComponent,
+  changeProperties,
 } = componentListSlice.actions;
 
 export default componentListSlice.reducer;

@@ -1,15 +1,18 @@
 import Tooltip from "components/shared/Tooltip";
-import React from "react";
+import React, { useState } from "react";
 import { AiOutlineReload } from "react-icons/ai";
 
 function PropsComponent({
+  type,
   className,
   text = "X",
   useIcon,
   icon = AiOutlineReload,
   title,
+  valueProps,
 }) {
   let Icon = icon;
+  const { get: value, set: setValue } = valueProps;
   return (
     <div
       className={`flex border border-transparent rounded-sm hover:border-gray-200 group relative ${className} `}
@@ -25,8 +28,16 @@ function PropsComponent({
       </div>
       <input
         className="w-full h-7 outline-none text-xxs cursor-default"
-        defaultValue={0}
+        defaultValue={value[type] || 0}
         type="number"
+        onKeyPress={(e) => {
+          if (e.key === "Enter") {
+            setValue(type, +e.target.value);
+          }
+        }}
+        onBlur={(e) => {
+          setValue(type, +e.target.value);
+        }}
       />
       {title && <Tooltip title={title} />}
     </div>

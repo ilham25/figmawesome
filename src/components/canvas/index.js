@@ -111,7 +111,7 @@ function MainCanvas() {
 
   useEffect(() => {
     setComponents(componentList?.value);
-    console.log(componentList);
+    // console.log(componentList);
   }, [componentList]);
 
   return (
@@ -185,6 +185,7 @@ function MainCanvas() {
                   width: 100,
                   opacity: 1,
                   fill: "#fff",
+                  rotation: 0,
                 },
                 parentId: e.target?.attrs?.id ?? undefined,
               })
@@ -209,6 +210,7 @@ function MainCanvas() {
               width={star.properties?.width}
               fill={star.properties.fill}
               opacity={star.properties?.opacity}
+              rotation={star.properties?.rotation}
               draggable={!shouldGrab}
               onDragStart={handleDragStart}
               onDragEnd={handleDragEnd}
@@ -218,6 +220,7 @@ function MainCanvas() {
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               onClick={handleMouseEnter}
+              cornerRadius={star?.properties?.cornerRadius}
             />
           ))}
         </Layer>
