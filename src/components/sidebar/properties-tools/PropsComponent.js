@@ -28,7 +28,7 @@ function PropsComponent({
       </div>
       <input
         className="w-full h-7 outline-none text-xxs cursor-default"
-        defaultValue={value[type] || 0}
+        defaultValue={(value[type] || 0).toFixed(0)}
         type="number"
         onKeyPress={(e) => {
           if (e.key === "Enter") {
@@ -38,7 +38,6 @@ function PropsComponent({
         onBlur={(e) => {
           setValue(type, +e.target.value);
         }}
-        // value={value[type] || 0}
       />
       {title && <Tooltip title={title} />}
     </div>

@@ -25,10 +25,6 @@ function Expandable({ title = "Frame", isChildren, data }) {
     <button
       className={`w-full outline-none ${
         !isChildren ? "focus:bg-cyan-50 " : "focus:bg-gray-100"
-      } ${
-        componentList?.selectedId === data?.id && !isChildren
-          ? "bg-cyan-50 "
-          : "bg-gray-100"
       }`}
     >
       <div

@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { AiOutlineRadiusSetting, AiOutlineReload } from "react-icons/ai";
-import { useSelector, useDispatch } from "react-redux";
-import { changeProperties } from "reducer/componentListSlice";
 import PropsComponent from "./PropsComponent";
 
 function PropsTools({ selectedComponentProps, setProperties }) {
