@@ -19,10 +19,6 @@ function NavBar() {
     dispatch(changeNavTool(value));
   };
 
-  useEffect(() => {
-    console.log(selectedTool);
-  }, [selectedTool]);
-
   const zoom = useSelector((state) => state.zoom);
 
   return (

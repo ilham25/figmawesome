@@ -1,11 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Stage, Layer, Star, Transformer, Rect } from "react-konva";
 import { useDebounce } from "use-debounce";
+import { v4 as uuidv4 } from "uuid";
 
 import useWindowSize from "hooks/useWindowSize";
 import { useDispatch, useSelector } from "react-redux";
 import { changeZoom } from "reducer/zoomSlice";
-import { addComponent } from "reducer/componentListSlice";
+import {
+  addComponent,
+  onMouseEnter,
+  onMouseLeave,
+} from "reducer/componentListSlice";
 
 // function generateShapes() {
 //   return [...Array(10)].map((_, i) => ({
@@ -33,32 +38,32 @@ function MainCanvas() {
   const [scaleRaw, setScaleRaw] = useState({ x: 1, y: 1 });
   const [scale] = useDebounce(scaleRaw, 200);
 
-  const [stars, setStars] = useState([]);
+  const [components, setComponents] = useState([]);
 
   const [shouldAdd, setShouldAdd] = useState(false);
   const [shouldGrab, setShouldGrab] = useState(false);
 
   const handleDragStart = (e) => {
     const id = e.target.id();
-    setStars(
-      stars.map((star) => {
+    setComponents(
+      components.map((comp) => {
         return {
-          ...star,
+          ...comp,
           properties: {
-            ...star.properties,
-            isDragging: star.id === id,
+            ...comp.properties,
+            isDragging: comp.id === id,
           },
         };
       })
     );
   };
   const handleDragEnd = (e) => {
-    setStars(
-      stars.map((star) => {
+    setComponents(
+      components.map((comp) => {
         return {
-          ...star,
+          ...comp,
           properties: {
-            ...star.properties,
+            ...comp.properties,
             isDragging: false,
           },
         };
@@ -67,31 +72,33 @@ function MainCanvas() {
   };
   const handleMouseEnter = (e) => {
     const id = e.target.id();
-    setStars(
-      stars.map((star) => {
-        return {
-          ...star,
-          properties: {
-            ...star.properties,
-            stroke: star.id === id ? "#33aeff" : undefined,
-          },
-        };
-      })
-    );
+    dispatch(onMouseEnter(id));
+    // setComponents(
+    //   components.map((comp) => {
+    //     return {
+    //       ...comp,
+    //       properties: {
+    //         ...comp.properties,
+    //         stroke: comp.id === id ? "#33aeff" : undefined,
+    //       },
+    //     };
+    //   })
+    // );
   };
   const handleMouseLeave = (e) => {
     const id = e.target.id();
-    setStars(
-      stars.map((star) => {
-        return {
-          ...star,
-          properties: {
-            ...star.properties,
-            stroke: star.id === id ? "transparent" : undefined,
-          },
-        };
-      })
-    );
+    dispatch(onMouseLeave(id));
+    // setComponents(
+    //   components.map((comp) => {
+    //     return {
+    //       ...comp,
+    //       properties: {
+    //         ...comp.properties,
+    //         stroke: comp.id === id ? "transparent" : undefined,
+    //       },
+    //     };
+    //   })
+    // );
   };
 
   useEffect(() => {
@@ -136,7 +143,8 @@ function MainCanvas() {
   }, [scale]);
 
   useEffect(() => {
-    setStars(componentList?.value);
+    setComponents(componentList?.value);
+    console.log(componentList.value);
   }, [componentList]);
 
   return (
@@ -186,9 +194,9 @@ function MainCanvas() {
             }
           } else {
             if (e.evt.deltaY < 0) {
-              e.currentTarget.offsetY(e.currentTarget.offsetY() + 20);
-            } else {
               e.currentTarget.offsetY(e.currentTarget.offsetY() - 20);
+            } else {
+              e.currentTarget.offsetY(e.currentTarget.offsetY() + 20);
             }
           }
         }}
@@ -199,13 +207,13 @@ function MainCanvas() {
           if (shouldAdd) {
             dispatch(
               addComponent({
-                id: Math.floor(Math.random() * 1000),
+                id: uuidv4(),
                 title: "Rectangle",
                 properties: {
                   isDragging: false,
                   x: e.evt.offsetX,
                   y: e.evt.offsetY,
-                  stroke: "transparent",
+                  stroke: "#21242a",
                   strokeWidth: 3,
                   strokeEnabled: true,
                   height: 100,
@@ -213,6 +221,7 @@ function MainCanvas() {
                   opacity: 1,
                   fill: "#fff",
                 },
+                parentId: e.target?.attrs?.id ?? undefined,
               })
             );
             setShouldAdd(false);
@@ -220,7 +229,7 @@ function MainCanvas() {
         }}
       >
         <Layer>
-          {stars.map((star) => (
+          {components.map((star) => (
             <Rect
               key={star.id}
               id={star.id}
@@ -230,7 +239,7 @@ function MainCanvas() {
               width={star.properties?.width}
               fill={star.properties.fill}
               opacity={star.properties?.opacity}
-              draggable
+              draggable={!shouldGrab}
               onDragStart={handleDragStart}
               onDragEnd={handleDragEnd}
               strokeEnabled={star?.properties.stroke}

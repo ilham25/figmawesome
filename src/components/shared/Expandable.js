@@ -1,9 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiFillCaretRight } from "react-icons/ai";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { onMouseEnter, onMouseLeave } from "reducer/componentListSlice";
 
 function Expandable({ title = "Frame", isChildren, data }) {
+  const componentList = useSelector((state) => state.componentList);
+  const dispatch = useDispatch();
+
   const [isExpand, setIsExpand] = useState(false);
-  const hasChildren = data?.child?.length > 0;
+  const [child, setChild] = useState([]);
+
+  const hasChildren = data?.parentId !== data?.id;
+
+  useEffect(() => {
+    const filterChildren = componentList?.value?.filter(
+      (comp) => comp?.parentId === data?.id
+    );
+
+    setChild(filterChildren);
+  }, [componentList]);
 
   return (
     <button
@@ -12,11 +28,21 @@ function Expandable({ title = "Frame", isChildren, data }) {
       }`}
     >
       <div
-        className={`py-2 px-2 border border-transparent hover:border-cyan-500 cursor-default flex group`}
+        className={`py-2 px-2 border ${
+          componentList?.hoveredId === data?.id
+            ? "border-cyan-500"
+            : "border-transparent"
+        } hover:border-cyan-500 cursor-default flex group`}
         onDoubleClick={() => {
           if (hasChildren) {
             setIsExpand((prev) => !prev);
           }
+        }}
+        onMouseEnter={() => {
+          dispatch(onMouseEnter(data?.id));
+        }}
+        onMouseLeave={() => {
+          dispatch(onMouseLeave(data?.id));
         }}
       >
         <div className="flex items-center">
@@ -49,11 +75,11 @@ function Expandable({ title = "Frame", isChildren, data }) {
         <>
           {isExpand && (
             <div className="pl-3">
-              {data?.child?.map((child, idx) => (
+              {child?.map((children, idx) => (
                 <Expandable
-                  key={child?.id}
-                  title={child?.title}
-                  data={child}
+                  key={children?.id}
+                  title={children?.title}
+                  data={children}
                   isChildren
                 />
               ))}

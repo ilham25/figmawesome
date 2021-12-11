@@ -10,9 +10,12 @@ function ComponentSidebar() {
 
   return (
     <Sidebar header="Widget List">
-      {componentList?.value?.map((widget) => (
-        <Expandable key={widget?.id} title={widget?.title} data={widget} />
-      ))}
+      {componentList?.value?.map(
+        (widget) =>
+          !widget?.parentId && (
+            <Expandable key={widget?.id} title={widget?.title} data={widget} />
+          )
+      )}
     </Sidebar>
   );
 }
