@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { AiFillCaretRight } from "react-icons/ai";
+import {
+  AiFillCaretRight,
+  AiOutlineAppstore,
+  AiOutlineDeploymentUnit,
+  AiOutlineInsertRowAbove,
+  AiOutlineLayout,
+  AiOutlineZoomIn,
+} from "react-icons/ai";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { onMouseEnter, onMouseLeave } from "reducer/componentListSlice";
@@ -13,11 +20,29 @@ function Expandable({ title = "Frame", isChildren, data }) {
 
   const hasChildren = data?.parentId !== data?.id;
 
+  const handleIcon = (group) => {
+    switch (group) {
+      case "components":
+        return AiOutlineDeploymentUnit;
+      case "containers":
+        return AiOutlineAppstore;
+      case "layouts":
+        return AiOutlineLayout;
+
+      case "popbars":
+        return AiOutlineInsertRowAbove;
+
+      default:
+        return AiOutlineDeploymentUnit;
+    }
+  };
+
+  const Icon = handleIcon(data?.group);
+
   useEffect(() => {
     const filterChildren = componentList?.value?.filter(
       (comp) => comp?.parentId === data?.id
     );
-
     setChild(filterChildren);
   }, [componentList]);
 
@@ -49,7 +74,7 @@ function Expandable({ title = "Frame", isChildren, data }) {
       >
         <div className="flex items-center">
           <div
-            className="h-full flex items-center pr-1"
+            className="h-full flex items-center"
             onClick={() => {
               if (hasChildren) {
                 setIsExpand((prev) => !prev);
@@ -62,6 +87,9 @@ function Expandable({ title = "Frame", isChildren, data }) {
                 isExpand ? "transform rotate-90" : "transform rotate-0"
               } ${hasChildren && "group-hover:opacity-100"}`}
             />
+          </div>
+          <div className="h-full flex items-center pl-1 pr-2">
+            <Icon size={16} className={`text-black`} />
           </div>
 
           <p

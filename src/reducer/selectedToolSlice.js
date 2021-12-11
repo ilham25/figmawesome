@@ -12,7 +12,6 @@ export const selectedToolSlice = createSlice({
     // },
     changeSelectedTool: (state, action) => {
       state.value = action.payload;
-      state.navTool = null;
     },
     changeNavTool: (state, action) => {
       state.navTool = action.payload;
