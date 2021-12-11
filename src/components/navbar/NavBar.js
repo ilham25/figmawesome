@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AiOutlineAppstore,
   AiOutlineDeploymentUnit,
@@ -6,11 +6,23 @@ import {
   AiOutlineLayout,
   AiOutlineZoomIn,
 } from "react-icons/ai";
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { changeNavTool, changeSelectedTool } from "reducer/selectedToolSlice";
 import ToolButton from "./ToolButton";
 
 function NavBar() {
-  const [selectedTool, setSelectedTool] = useState(null);
+  const selectedTool = useSelector((state) => state?.selectedTool);
+  const dispatch = useDispatch();
+
+  const setSelectedTool = (value) => {
+    dispatch(changeNavTool(value));
+  };
+
+  useEffect(() => {
+    console.log(selectedTool);
+  }, [selectedTool]);
+
   const zoom = useSelector((state) => state.zoom);
 
   return (

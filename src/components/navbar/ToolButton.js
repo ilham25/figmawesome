@@ -17,17 +17,16 @@ function ToolButton({
   return (
     <div
       className="relative group"
-
       // onBlur={() => {
       //   setTool(null);
       // }}
     >
       <button
         className={`h-full flex items-center outline-none justify-center px-3 hover:bg-black ${
-          tool === type && "bg-cyan-500 hover:bg-cyan-500"
+          tool?.navTool === type && "bg-cyan-500 hover:bg-cyan-500"
         }`}
         onClick={() => {
-          if (tool === type) {
+          if (tool?.navTool === type) {
             setTool(null);
           } else {
             setTool(type);
@@ -36,8 +35,8 @@ function ToolButton({
       >
         <Icon className="text-white" size={24} />
       </button>
-      {type !== tool && <Tooltip title={title} />}
-      {type === tool && <Popup data={toolList[type]} />}
+      {type !== tool?.navTool && <Tooltip title={title} />}
+      {type === tool?.navTool && <Popup data={toolList[type]} />}
     </div>
   );
 }

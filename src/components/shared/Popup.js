@@ -1,21 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { AiFillCaretRight } from "react-icons/ai";
+import { useDispatch } from "react-redux";
+
+import { changeSelectedTool } from "reducer/selectedToolSlice";
 
 const PopupList = ({ data, selectedElementProps }) => {
   const [isActive, setIsActive] = useState(null);
   const { set: setSelected } = selectedElementProps;
+
   return (
     <>
       {data?.map((item) => (
         <div key={item.key} className="relative group">
           <button
             className="w-full hover:bg-cyan-500 px-4 py-1  cursor-default flex justify-between items-center relative group"
+            onMouseEnter={() => {
+              setIsActive(item.key);
+            }}
             onClick={() => {
               if (item?.child) {
-                setIsActive(item.key);
-                setSelected(null);
+                setSelected(changeSelectedTool(null));
               } else {
-                setSelected(item.key);
+                setSelected(changeSelectedTool(item.key));
               }
             }}
           >
@@ -44,7 +50,7 @@ const PopupList = ({ data, selectedElementProps }) => {
 };
 
 function Popup({ data }) {
-  const [selectedElement, setSelectedElement] = useState(null);
+  const setSelectedElement = useDispatch();
 
   return (
     <div className="bg-black  py-1 absolute origin-bottom-right left-1/2  w-auto rounded-sm transform -translate-x-1/2 z-50 mt-2 shadow-sm">
@@ -52,7 +58,6 @@ function Popup({ data }) {
         <PopupList
           data={data}
           selectedElementProps={{
-            get: selectedElement,
             set: setSelectedElement,
           }}
         />
