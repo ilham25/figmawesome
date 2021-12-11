@@ -26,25 +26,7 @@ const setInactiveComponent = (value) => {
 export const componentListSlice = createSlice({
   name: "componentList",
   initialState: {
-    value: [
-      // {
-      //   id: "awek",
-      //   title: "vl",
-      //   properties: {
-      //     x: 50,
-      //     y: 50,
-      //     height: 1080,
-      //     width: 1920,
-      //     stroke: "transparent",
-      //     strokeWidth: 3,
-      //     strokeEnabled: true,
-      //     opacity: 1,
-      //     fill: "#c4c4c4",
-      //     rotation: 0,
-      //   },
-      //   child: [],
-      // },
-    ],
+    value: [],
     hoveredId: null,
     selectedId: null,
   },
@@ -61,6 +43,7 @@ export const componentListSlice = createSlice({
       state.hoveredId = null;
       state.value = setInactiveComponent(state.value);
     },
+
     changeSelectedComponent: (state, action) => {
       state.selectedId = action.payload;
     },

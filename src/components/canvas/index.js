@@ -11,6 +11,7 @@ import {
   onMouseEnter,
   onMouseLeave,
   changeSelectedComponent,
+  changeProperties,
 } from "reducer/componentListSlice";
 
 function MainCanvas() {
@@ -32,30 +33,33 @@ function MainCanvas() {
 
   const handleDragStart = (e) => {
     const id = e.target.id();
-    setComponents(
-      components.map((comp) => {
-        return {
-          ...comp,
-          properties: {
-            ...comp.properties,
-            isDragging: comp.id === id,
-          },
-        };
-      })
-    );
+    const selectedComponent = components.find((comp) => comp.id === id);
+
+    const payload = {
+      ...selectedComponent,
+      properties: {
+        ...selectedComponent.properties,
+        isDragging: true,
+      },
+    };
+
+    dispatch(changeProperties(payload));
   };
   const handleDragEnd = (e) => {
-    setComponents(
-      components.map((comp) => {
-        return {
-          ...comp,
-          properties: {
-            ...comp.properties,
-            isDragging: false,
-          },
-        };
-      })
-    );
+    const id = e.target.id();
+    const selectedComponent = components.find((comp) => comp.id === id);
+
+    const payload = {
+      ...selectedComponent,
+      properties: {
+        ...selectedComponent.properties,
+        x: e.target.x(),
+        y: e.target.y(),
+        isDragging: false,
+      },
+    };
+
+    dispatch(changeProperties(payload));
   };
   const handleMouseEnter = (e) => {
     const id = e.target.id();
@@ -66,6 +70,80 @@ function MainCanvas() {
     const id = e.target.id();
     dispatch(onMouseLeave(id));
     // }
+  };
+  const handleOnWheel = (e) => {
+    if (e.evt.ctrlKey) {
+      let scaleX = e.currentTarget.scaleX();
+      let scaleY = e.currentTarget.scaleY();
+
+      if (e.evt.deltaY < 0) {
+        if (scaleX < 10 || scaleY < 10) {
+          if (scaleX >= 0.2 || scaleY >= 0.2) {
+            scaleX = scaleX + 0.05;
+            scaleY = scaleY + 0.05;
+          } else {
+            scaleX = scaleX + 0.01;
+            scaleY = scaleY + 0.01;
+          }
+        }
+      } else {
+        if (scaleX > 0.02 || scaleY > 0.02) {
+          if (scaleX <= 0.2 || scaleY <= 0.2) {
+            scaleX = scaleX - 0.01;
+            scaleY = scaleY - 0.01;
+          } else {
+            scaleX = scaleX - 0.05;
+            scaleY = scaleY - 0.05;
+          }
+        }
+      }
+
+      if (scale.x != scaleX || scale.y !== scaleY) {
+        e.currentTarget.scaleX(scaleX);
+        e.currentTarget.scaleY(scaleY);
+        setScaleRaw({
+          x: scaleX,
+          y: scaleY,
+        });
+      }
+    } else {
+      if (e.evt.deltaY < 0) {
+        e.currentTarget.offsetY(e.currentTarget.offsetY() - 20);
+      } else {
+        e.currentTarget.offsetY(e.currentTarget.offsetY() + 20);
+      }
+    }
+  };
+  const handleOnClick = (e) => {
+    let position = e.currentTarget.getRelativePointerPosition();
+    if (shouldAdd) {
+      dispatch(
+        addComponent({
+          id: uuidv4(),
+          title: "Rectangle",
+          properties: {
+            isDragging: false,
+            x: position.x,
+            y: position.y,
+            stroke: "#33aeff",
+            strokeWidth: 3,
+            strokeEnabled: true,
+            height: 100,
+            width: 100,
+            opacity: 1,
+            fill: "#c4c4c4",
+            rotation: 0,
+          },
+          parentId: e.target?.attrs?.id ?? undefined,
+        })
+      );
+      setShouldAdd(false);
+    }
+    if (e.target.attrs.id) {
+      dispatch(changeSelectedComponent(e.target.attrs.id));
+    } else {
+      dispatch(changeSelectedComponent(null));
+    }
   };
 
   useEffect(() => {
@@ -124,80 +202,9 @@ function MainCanvas() {
       <Stage
         width={canvasSize.width}
         height={canvasSize.height}
-        onWheel={(e) => {
-          if (e.evt.ctrlKey) {
-            let scaleX = e.currentTarget.scaleX();
-            let scaleY = e.currentTarget.scaleY();
-
-            if (e.evt.deltaY < 0) {
-              if (scaleX < 10 || scaleY < 10) {
-                if (scaleX >= 0.2 || scaleY >= 0.2) {
-                  scaleX = scaleX + 0.05;
-                  scaleY = scaleY + 0.05;
-                } else {
-                  scaleX = scaleX + 0.01;
-                  scaleY = scaleY + 0.01;
-                }
-              }
-            } else {
-              if (scaleX > 0.02 || scaleY > 0.02) {
-                if (scaleX <= 0.2 || scaleY <= 0.2) {
-                  scaleX = scaleX - 0.01;
-                  scaleY = scaleY - 0.01;
-                } else {
-                  scaleX = scaleX - 0.05;
-                  scaleY = scaleY - 0.05;
-                }
-              }
-            }
-
-            if (scale.x != scaleX || scale.y !== scaleY) {
-              e.currentTarget.scaleX(scaleX);
-              e.currentTarget.scaleY(scaleY);
-              setScaleRaw({
-                x: scaleX,
-                y: scaleY,
-              });
-            }
-          } else {
-            if (e.evt.deltaY < 0) {
-              e.currentTarget.offsetY(e.currentTarget.offsetY() - 20);
-            } else {
-              e.currentTarget.offsetY(e.currentTarget.offsetY() + 20);
-            }
-          }
-        }}
+        onWheel={handleOnWheel}
         draggable={shouldGrab}
-        onClick={(e) => {
-          if (shouldAdd) {
-            dispatch(
-              addComponent({
-                id: uuidv4(),
-                title: "Rectangle",
-                properties: {
-                  isDragging: false,
-                  x: e.evt.offsetX,
-                  y: e.evt.offsetY,
-                  stroke: "#33aeff",
-                  strokeWidth: 3,
-                  strokeEnabled: true,
-                  height: 100,
-                  width: 100,
-                  opacity: 1,
-                  fill: "#c4c4c4",
-                  rotation: 0,
-                },
-                parentId: e.target?.attrs?.id ?? undefined,
-              })
-            );
-            setShouldAdd(false);
-          }
-          if (e.target.attrs.id) {
-            dispatch(changeSelectedComponent(e.target.attrs.id));
-          } else {
-            dispatch(changeSelectedComponent(null));
-          }
-        }}
+        onClick={handleOnClick}
       >
         <Layer>
           {components.map((star) => (
