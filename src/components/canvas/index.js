@@ -10,21 +10,8 @@ import {
   addComponent,
   onMouseEnter,
   onMouseLeave,
+  changeSelectedComponent,
 } from "reducer/componentListSlice";
-
-// function generateShapes() {
-//   return [...Array(10)].map((_, i) => ({
-//     id: i.toString(),
-//     x: Math.random() * window.innerWidth,
-//     y: Math.random() * window.innerHeight,
-//     isDragging: false,
-//     stroke: "transparent",
-//     strokeWidth: 3,
-//     strokeEnabled: true,
-//   }));
-// }
-
-// const INITIAL_STATE = generateShapes();
 
 function MainCanvas() {
   const mainCanvasRef = useRef(null);
@@ -73,32 +60,12 @@ function MainCanvas() {
   const handleMouseEnter = (e) => {
     const id = e.target.id();
     dispatch(onMouseEnter(id));
-    // setComponents(
-    //   components.map((comp) => {
-    //     return {
-    //       ...comp,
-    //       properties: {
-    //         ...comp.properties,
-    //         stroke: comp.id === id ? "#33aeff" : undefined,
-    //       },
-    //     };
-    //   })
-    // );
   };
   const handleMouseLeave = (e) => {
+    // if (!componentList?.selectedId) {
     const id = e.target.id();
     dispatch(onMouseLeave(id));
-    // setComponents(
-    //   components.map((comp) => {
-    //     return {
-    //       ...comp,
-    //       properties: {
-    //         ...comp.properties,
-    //         stroke: comp.id === id ? "transparent" : undefined,
-    //       },
-    //     };
-    //   })
-    // );
+    // }
   };
 
   useEffect(() => {
@@ -144,7 +111,7 @@ function MainCanvas() {
 
   useEffect(() => {
     setComponents(componentList?.value);
-    console.log(componentList.value);
+    console.log(componentList);
   }, [componentList]);
 
   return (
@@ -200,10 +167,8 @@ function MainCanvas() {
             }
           }
         }}
-        // scale={scale}
         draggable={shouldGrab}
         onClick={(e) => {
-          console.log(e);
           if (shouldAdd) {
             dispatch(
               addComponent({
@@ -213,7 +178,7 @@ function MainCanvas() {
                   isDragging: false,
                   x: e.evt.offsetX,
                   y: e.evt.offsetY,
-                  stroke: "#21242a",
+                  stroke: "#33aeff",
                   strokeWidth: 3,
                   strokeEnabled: true,
                   height: 100,
@@ -225,6 +190,11 @@ function MainCanvas() {
               })
             );
             setShouldAdd(false);
+          }
+          if (e.target.attrs.id) {
+            dispatch(changeSelectedComponent(e.target.attrs.id));
+          } else {
+            dispatch(changeSelectedComponent(null));
           }
         }}
       >

@@ -1,5 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const setActiveComponent = (value, id) => {
+  return value.map((comp) => {
+    return {
+      ...comp,
+      properties: {
+        ...comp.properties,
+        stroke: comp.id === id ? "#33aeff" : "transparent",
+      },
+    };
+  });
+};
+const setInactiveComponent = (value) => {
+  return value.map((comp) => {
+    return {
+      ...comp,
+      properties: {
+        ...comp.properties,
+        stroke: "transparent",
+      },
+    };
+  });
+};
+
 export const componentListSlice = createSlice({
   name: "componentList",
   initialState: {
@@ -31,30 +54,28 @@ export const componentListSlice = createSlice({
     addChild: (state, action) => {},
     onMouseEnter: (state, action) => {
       state.hoveredId = action.payload;
-      state.value = state.value.map((comp) => {
-        return {
-          ...comp,
-          properties: {
-            ...comp.properties,
-            stroke: comp.id === action.payload ? "#33aeff" : undefined,
-          },
-        };
-      });
+      state.value = setActiveComponent(state.value, action.payload);
     },
     onMouseLeave: (state, action) => {
       state.hoveredId = null;
-      state.value = state.value.map((comp) => {
-        return {
-          ...comp,
-          properties: {
-            ...comp.properties,
-            stroke: comp.id === action.payload ? "transparent" : undefined,
-          },
-        };
-      });
+      state.value = setInactiveComponent(state.value);
     },
     changeSelectedComponent: (state, action) => {
       state.selectedId = action.payload;
+    },
+    changeProperties: (state, action) => {
+      state.value = state.value.map((comp, index) => {
+        if (comp.id === action.payload.id) {
+          state.value[index] = {
+            id: action.payload.id,
+            ...action,
+            properties: {
+              ...action.payload.properties,
+            },
+          };
+        }
+        return comp;
+      });
     },
   },
 });

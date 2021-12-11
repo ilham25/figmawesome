@@ -25,6 +25,10 @@ function Expandable({ title = "Frame", isChildren, data }) {
     <button
       className={`w-full outline-none ${
         !isChildren ? "focus:bg-cyan-50 " : "focus:bg-gray-100"
+      } ${
+        componentList?.selectedId === data?.id && !isChildren
+          ? "bg-cyan-50 "
+          : "bg-gray-100"
       }`}
     >
       <div
@@ -42,7 +46,9 @@ function Expandable({ title = "Frame", isChildren, data }) {
           dispatch(onMouseEnter(data?.id));
         }}
         onMouseLeave={() => {
-          dispatch(onMouseLeave(data?.id));
+          if (!componentList?.selectedId) {
+            dispatch(onMouseLeave(data?.id));
+          }
         }}
       >
         <div className="flex items-center">
