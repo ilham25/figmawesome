@@ -4,6 +4,7 @@ import { changeProperties } from "reducer/componentListSlice";
 import Sidebar from ".";
 import AlignTools from "./align-tools";
 import FillTools from "./fill-tools";
+import GeneratedCode from "./generated-code";
 import PropsTools from "./properties-tools";
 
 function PropertiesSidebar() {
@@ -56,6 +57,7 @@ function PropertiesSidebar() {
             }}
             setProperties={setProperties}
           />
+          <GeneratedCode />
         </>
       )}
     </Sidebar>
