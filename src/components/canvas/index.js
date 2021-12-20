@@ -8,13 +8,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { changeZoom } from "reducer/zoomSlice";
 import {
   addComponent,
-  onMouseEnter,
-  onMouseLeave,
   changeSelectedComponent,
   changeProperties,
 } from "reducer/componentListSlice";
 import { resetTool } from "reducer/selectedToolSlice";
 import { toolTitleList } from "utils";
+import Frame from "./Frame";
 
 function MainCanvas() {
   const mainCanvasRef = useRef(null);
@@ -64,16 +63,16 @@ function MainCanvas() {
 
     dispatch(changeProperties(payload));
   };
-  const handleMouseEnter = (e) => {
-    const id = e.target.id();
-    dispatch(onMouseEnter(id));
-  };
-  const handleMouseLeave = (e) => {
-    // if (!componentList?.selectedId) {
-    const id = e.target.id();
-    dispatch(onMouseLeave(id));
-    // }
-  };
+  // const handleMouseEnter = (e) => {
+  //   const id = e.target.id();
+  //   dispatch(onMouseEnter(id));
+  // };
+  // const handleMouseLeave = (e) => {
+  //   // if (!componentList?.selectedId) {
+  //   const id = e.target.id();
+  //   dispatch(onMouseLeave(id));
+  //   // }
+  // };
   const handleOnWheel = (e) => {
     if (e.evt.ctrlKey) {
       let scaleX = e.currentTarget.scaleX();
@@ -118,6 +117,7 @@ function MainCanvas() {
     }
   };
   const handleOnClick = (e) => {
+    console.log(e);
     let position = e.currentTarget.getRelativePointerPosition();
     if (shouldAdd) {
       dispatch(
@@ -139,7 +139,10 @@ function MainCanvas() {
             fill: "#c4c4c4",
             rotation: 0,
           },
-          parentId: e.target?.attrs?.id ?? undefined,
+          parentId:
+            e.target?.attrs?.id && e.target?.attrs?.group === "frames"
+              ? e.target?.attrs?.id
+              : undefined,
         })
       );
       dispatch(resetTool());
@@ -169,11 +172,11 @@ function MainCanvas() {
   }, [mainCanvasRef, width, height]);
 
   useEffect(() => {
-    window.addEventListener("keypress", (e) => {
-      if (e.key === "r") {
-        setShouldAdd(true);
-      }
-    });
+    // window.addEventListener("keypress", (e) => {
+    //   if (e.key === "r") {
+    //     setShouldAdd(true);
+    //   }
+    // });
     window.addEventListener("keydown", (e) => {
       if (e.key === " ") {
         setShouldGrab(true);
@@ -219,31 +222,17 @@ function MainCanvas() {
         draggable={shouldGrab}
         onClick={handleOnClick}
       >
-        <Layer>
-          {components.map((star) => (
-            <Rect
-              key={star.id}
-              id={star.id}
-              x={star.properties.x}
-              y={star.properties.y}
-              height={star.properties?.height}
-              width={star.properties?.width}
-              fill={star.properties.fill}
-              opacity={star.properties?.opacity}
-              rotation={star.properties?.rotation}
-              draggable={!shouldGrab}
-              onDragStart={handleDragStart}
-              onDragEnd={handleDragEnd}
-              strokeEnabled={star?.properties.stroke}
-              stroke={star?.properties.stroke}
-              strokeWidth={star?.properties.strokeWidth}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-              onClick={handleMouseEnter}
-              cornerRadius={star?.properties?.cornerRadius}
-            />
-          ))}
-        </Layer>
+        {components?.map((comp, _, arr) => (
+          <Frame
+            id={comp.id}
+            key={comp.id}
+            data={comp}
+            dispatch={dispatch}
+            scale={scale}
+            draggable={!shouldGrab}
+            dataSource={arr}
+          />
+        ))}
       </Stage>
     </div>
   );

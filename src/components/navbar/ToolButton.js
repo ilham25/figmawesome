@@ -33,7 +33,7 @@ function ToolButton({
           }
         }}
       >
-        <Icon className="text-white" size={24} />
+        <Icon className="text-white" size={20} />
       </button>
       {type !== tool?.navTool && <Tooltip title={title} />}
       {type === tool?.navTool && <Popup data={toolList[type]} />}

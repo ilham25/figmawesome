@@ -111,6 +111,10 @@ export const toolTitleList = {
   "wibox.layout.manual": "Manual",
   "wibox.layout.ratio": "Ratio",
   "wibox.layout.stack": "Stack",
+  "frame.1280x720": "1280x720",
+  "frame.1366x768": "1366x768",
+  "frame.1600x900": "1600x900",
+  "frame.1920x1080": "1920x1080",
 };
 
 export const toolList = {
@@ -346,6 +350,24 @@ export const toolList = {
     },
   ],
   popbars: [],
+  frames: [
+    {
+      key: "frame.1280x720",
+      title: "1280x720",
+    },
+    {
+      key: "frame.1366x768",
+      title: "1366x768",
+    },
+    {
+      key: "frame.1600x900",
+      title: "1600x900",
+    },
+    {
+      key: "frame.1920x1080",
+      title: "1920x1080",
+    },
+  ],
 };
 export const widgetData = [
   {
