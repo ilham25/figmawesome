@@ -3,13 +3,14 @@ import {
   AiFillCaretRight,
   AiOutlineAppstore,
   AiOutlineDeploymentUnit,
+  AiOutlineFundProjectionScreen,
   AiOutlineInsertRowAbove,
   AiOutlineLayout,
   AiOutlineZoomIn,
 } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { onMouseEnter, onMouseLeave } from "reducer/componentListSlice";
+import { removeHovered, setHovered } from "reducer/componentListSlice";
 
 function Expandable({ title = "Frame", isChildren, data }) {
   const componentList = useSelector((state) => state.componentList);
@@ -31,6 +32,8 @@ function Expandable({ title = "Frame", isChildren, data }) {
 
       case "popbars":
         return AiOutlineInsertRowAbove;
+      case "frames":
+        return AiOutlineFundProjectionScreen;
 
       default:
         return AiOutlineDeploymentUnit;
@@ -64,11 +67,11 @@ function Expandable({ title = "Frame", isChildren, data }) {
           }
         }}
         onMouseEnter={() => {
-          dispatch(onMouseEnter(data?.id));
+          dispatch(setHovered(data?.id));
         }}
         onMouseLeave={() => {
           if (!componentList?.selectedId) {
-            dispatch(onMouseLeave(data?.id));
+            dispatch(removeHovered(data?.id));
           }
         }}
       >

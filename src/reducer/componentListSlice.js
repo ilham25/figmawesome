@@ -26,7 +26,21 @@ const setInactiveComponent = (value) => {
 export const componentListSlice = createSlice({
   name: "componentList",
   initialState: {
-    value: [],
+    value: [
+      {
+        id: "screen1",
+        title: "Screen",
+        key: "screen",
+        group: "frames",
+        properties: {
+          x: 0,
+          y: 0,
+          width: 1366,
+          height: 768,
+          fill: "#C4C4C4",
+        },
+      },
+    ],
     hoveredId: null,
     selectedId: null,
   },
@@ -35,15 +49,12 @@ export const componentListSlice = createSlice({
       state.value = [...state.value, action.payload];
     },
     addChild: (state, action) => {},
-    onMouseEnter: (state, action) => {
+    setHovered: (state, action) => {
       state.hoveredId = action.payload;
-      state.value = setActiveComponent(state.value, action.payload);
     },
-    onMouseLeave: (state, action) => {
+    removeHovered: (state, action) => {
       state.hoveredId = null;
-      state.value = setInactiveComponent(state.value);
     },
-
     changeSelectedComponent: (state, action) => {
       state.selectedId = action.payload;
     },
@@ -62,8 +73,8 @@ export const componentListSlice = createSlice({
 export const {
   addComponent,
   addChild,
-  onMouseEnter,
-  onMouseLeave,
+  setHovered,
+  removeHovered,
   changeSelectedComponent,
   changeProperties,
 } = componentListSlice.actions;

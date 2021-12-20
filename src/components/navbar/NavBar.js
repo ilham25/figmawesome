@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import {
+  AiFillUsb,
   AiOutlineAppstore,
   AiOutlineDeploymentUnit,
+  AiOutlineFundProjectionScreen,
   AiOutlineInsertRowAbove,
   AiOutlineLayout,
   AiOutlineZoomIn,
@@ -22,11 +24,14 @@ function NavBar() {
   const zoom = useSelector((state) => state.zoom);
 
   return (
-    <header className="h-12 bg-gray-800 grid grid-cols-3 px-5">
-      <div className="flex items-center">
-        {/* <p className="font-normal text-cyan-500">AwesomeWM Generator</p> */}
-      </div>
-      <div className="flex h-full justify-center">
+    <header className="h-12 bg-gray-800 grid grid-cols-3 pr-5">
+      <div className="flex h-full">
+        <ToolButton
+          type="badge"
+          title="Badge"
+          icon={AiFillUsb}
+          selectedToolProps={{ get: selectedTool, set: setSelectedTool }}
+        />
         <ToolButton
           type="components"
           title="Components"
@@ -51,6 +56,15 @@ function NavBar() {
           icon={AiOutlineInsertRowAbove}
           selectedToolProps={{ get: selectedTool, set: setSelectedTool }}
         />
+        <ToolButton
+          type="frames"
+          title="Frames"
+          icon={AiOutlineFundProjectionScreen}
+          selectedToolProps={{ get: selectedTool, set: setSelectedTool }}
+        />
+      </div>
+      <div className="flex items-center justify-center">
+        <p className="font-normal text-sm text-gray-400">FigmAwesome</p>
       </div>
       <div className="flex items-center justify-end">
         <div className="flex items-center gap-1">
